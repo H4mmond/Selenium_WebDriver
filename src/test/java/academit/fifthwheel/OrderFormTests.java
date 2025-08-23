@@ -40,7 +40,7 @@ public class OrderFormTests {
 
     @Test
     @Order(1)
-    public void dialogCookie() {
+    public void dialogCookieTest() {
         Assertions.assertEquals("Этот сайт использует файлы cookie!", driver.findElement(By.id("c-ttl")).getText(),
                 "Expected dialog header is 'Этот сайт использует файлы cookie!' but atual is " + driver.findElement(By.id("c-ttl")).getText());
 
@@ -54,7 +54,7 @@ public class OrderFormTests {
 
     @Test
     @Order(2)
-    public void exampleForm() {
+    public void exampleFormTest() {
         WebElement exampleFormTitle = driver.findElement(By.xpath("//*[normalize-space()='Пример готовой формы']"));
         TestUtils.scrollToElement(driver, exampleFormTitle);
 

@@ -4,6 +4,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.openqa.selenium.By;
@@ -12,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -44,13 +46,8 @@ public class OnlineStoreTests {
     }
 
     @ParameterizedTest
-//    @ValueSource(strings = {"Laptop"})
     @ValueSource(strings = {"Laptop", "Smartphone", "Fiction"})
-    void parameterizedSearch(String product) throws InterruptedException {
-//        WebElement linkToCart = driver.findElement(By.id("topcartlink"));
-//        WebElement productCounter = linkToCart.findElement(By.className("cart-qty"));
-//        Assertions.assertEquals("(0)", productCounter.getText());
-
+    void productSearchAddToCartTest(String product) throws InterruptedException {
         WebElement searchInput = driver.findElement(By.id("small-searchterms"));
         searchInput.sendKeys(product);
         Assertions.assertEquals(product, searchInput.getAttribute("value"),
@@ -69,7 +66,6 @@ public class OnlineStoreTests {
         Assertions.assertEquals("Add to cart", btnAddToCart.getAttribute("value"));
         btnAddToCart.click();
 
-//        wait.until(ExpectedConditions.textToBePresentInElement(productCounter, "(1)"));
         Thread.sleep(1000);
         driver.findElement(By.id("topcartlink")).click();
 
@@ -83,5 +79,33 @@ public class OnlineStoreTests {
 
         WebElement cartProductName = driver.findElement(By.xpath("//*[@class='cart-item-row']//*[@class='product-name']"));
         Assertions.assertEquals(productName, cartProductName.getText(), "Expected product name in your cart is " + productName + " but actual is " + cartProductName.getText());
+    }
+
+    @Test
+    public void selectPerPageTest() {
+        driver.findElement(By.xpath("//*[contains(@class,'block-category-navigation')]//*[normalize-space(text())='Books']")).click();
+
+        wait.until(ExpectedConditions.urlToBe(mainURL + "books"));
+        Assertions.assertEquals(mainURL + "books", driver.getCurrentUrl());
+
+        WebElement productsPerPage = driver.findElement(By.xpath("//*[@id='products-pagesize']"));
+        Select selectPerPage = new Select(productsPerPage);
+
+        WebElement selectedOption = selectPerPage.getFirstSelectedOption();
+        Assertions.assertEquals("8", selectedOption.getText(),
+                "Expected selected option is '8' but actual is " + selectedOption.getText());
+
+        List<WebElement> productListSizeEight = driver.findElements(By.xpath("//*[@class='product-grid']//*[@class='item-box']"));
+        Assertions.assertTrue(productListSizeEight.size() <= 8,
+                "Expected number of products is <=8 but actual is " + productListSizeEight.size());
+
+        selectPerPage.selectByVisibleText("4");
+        wait.until(ExpectedConditions.urlToBe(mainURL + "books?pagesize=4"));
+        Assertions.assertEquals(mainURL + "books?pagesize=4", driver.getCurrentUrl(),
+                "Expected URL is " + mainURL + "books?pagesize=4" + " but actual is " + driver.getCurrentUrl());
+
+        List<WebElement> productListSizeFour = driver.findElements(By.xpath("//*[@class='product-grid']//*[@class='item-box']"));
+        Assertions.assertTrue(productListSizeFour.size() <= 4,
+                "Expected number of products is <=4 but actual is " + productListSizeFour.size());
     }
 }

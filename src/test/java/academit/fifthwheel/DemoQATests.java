@@ -60,7 +60,7 @@ public class DemoQATests {
     }
 
     @Test
-    @Order(1)
+    @Order(5)
     public void fieldTitleTest() {
         WebElement form = driver.findElement(By.id("userForm"));
         List<WebElement> fieldTitle = form.findElements(By.className("col-md-3"));
@@ -72,7 +72,7 @@ public class DemoQATests {
     }
 
     @Test
-    @Order(2)
+    @Order(10)
     public void firstNameInputTest() {
         WebElement firstName = driver.findElement(By.id("firstName"));
         Assertions.assertEquals("First Name", firstName.getAttribute("placeholder"),
@@ -84,7 +84,7 @@ public class DemoQATests {
     }
 
     @Test
-    @Order(3)
+    @Order(15)
     public void lastNameInputTest() {
         WebElement lastName = driver.findElement(By.id("lastName"));
         Assertions.assertEquals("Last Name", lastName.getAttribute("placeholder"),
@@ -96,7 +96,7 @@ public class DemoQATests {
     }
 
     @Test
-    @Order(4)
+    @Order(20)
     public void emailInputTest() {
         WebElement email = driver.findElement(By.id("userEmail"));
         Assertions.assertEquals("name@example.com", email.getAttribute("placeholder"),
@@ -108,7 +108,7 @@ public class DemoQATests {
     }
 
     @Test
-    @Order(5)
+    @Order(25)
     public void genderRadioTest() {
         WebElement genderRadio = driver.findElement(By.id("gender-radio-2"));
         WebElement genderLabel = driver.findElement(By.xpath("//*[@for='gender-radio-2']"));
@@ -121,7 +121,7 @@ public class DemoQATests {
     }
 
     @Test
-    @Order(6)
+    @Order(30)
     public void numberInputTest() {
         WebElement number = driver.findElement(By.id("userNumber"));
         Assertions.assertEquals("Mobile Number", number.getAttribute("placeholder"),
@@ -133,7 +133,7 @@ public class DemoQATests {
     }
 
     @Test
-    @Order(7)
+    @Order(35)
     public void dateOfBirthInputTest() {
         WebElement dateOfBirth = driver.findElement(By.id("dateOfBirth"));
         WebElement dateOfBirthInput = dateOfBirth.findElement(By.id("dateOfBirthInput"));
@@ -175,7 +175,7 @@ public class DemoQATests {
     }
 
     @Test
-    @Order(8)
+    @Order(40)
     public void subjectsAutoCompleteTest() {
         WebElement subjectsAutoCompleteInput = driver.findElement(By.id("subjectsInput"));
         subjectsAutoCompleteInput.sendKeys("En");
@@ -210,7 +210,7 @@ public class DemoQATests {
     }
 
     @Test
-    @Order(9)
+    @Order(45)
     public void hobbiesCheckboxTest() {
         WebElement hobbieCheckboxTwo = driver.findElement(By.id("hobbies-checkbox-2"));
         WebElement hobbieLabelTwo = driver.findElement(By.xpath("//*[@for='hobbies-checkbox-2']"));
@@ -231,7 +231,7 @@ public class DemoQATests {
     }
 
     @Test
-    @Order(10)
+    @Order(50)
     public void uploadPictureTest() {
         String systemProperty = System.getProperty("user.dir");
         String uploadImage = systemProperty + "/src/test/java/academit/fifthwheel/images/scroofy.jpg";
@@ -244,7 +244,7 @@ public class DemoQATests {
     }
 
     @Test
-    @Order(11)
+    @Order(55)
     public void textareaCurrentAddressTest() {
         WebElement currentAddress = driver.findElement(By.id("currentAddress"));
         Assertions.assertEquals("Current Address", currentAddress.getAttribute("placeholder"),
@@ -256,7 +256,7 @@ public class DemoQATests {
     }
 
     @Test
-    @Order(12)
+    @Order(60)
     public void stateDropdownTest() {
         WebElement state = driver.findElement(By.id("state"));
         Assertions.assertEquals("Select State", state.getText(),
@@ -275,7 +275,7 @@ public class DemoQATests {
     }
 
     @Test
-    @Order(13)
+    @Order(65)
     public void cityDropdownTest() {
         WebElement city = driver.findElement(By.id("city"));
         Assertions.assertEquals("Select City", city.getText(),
@@ -295,21 +295,21 @@ public class DemoQATests {
     }
 
     @Test
-    @Order(14)
+    @Order(70)
     public void btnFormSubmit() throws InterruptedException {
         Thread.sleep(500);
         driver.findElement(By.id("submit")).click();
     }
 
     @Test
-    @Order(15)
+    @Order(75)
     public void modalDialogTable() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("table-responsive")));
         List<WebElement> tableLabelsValues = driver.findElements(By.xpath("//tbody//td"));
         List<String> expectedTableLabelsValues = List.of("Student Name", "first name last name", "Student Email", "user322@gmail.com", "Gender", "Female", "Mobile", "0123456789", "Date of Birth", "25 May,1977", "Subjects", "English, Chemistry", "Hobbies", "Reading, Music", "Picture", "scroofy.jpg", "Address", "11 Main St, Haines, AK 99827, United States", "State and City", "Haryana Panipat");
         for (int m = 0; m < tableLabelsValues.size(); ++m) {
             Assertions.assertEquals(expectedTableLabelsValues.get(m), tableLabelsValues.get(m).getText(),
-                    "Expected table text is '" + expectedTableLabelsValues.get(m) + "' but actual is " + tableLabelsValues.get(m).getText());
+                    "Expected table text is " + expectedTableLabelsValues.get(m) + " but actual is " + tableLabelsValues.get(m).getText());
         }
     }
 }
