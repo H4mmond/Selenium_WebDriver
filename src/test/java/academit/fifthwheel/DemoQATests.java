@@ -20,17 +20,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
-
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DemoQATests {
     private static WebDriver driver;
     private static WebDriverWait wait;
 
-    @BeforeAll
-    public static void setUp() {
+    @BeforeEach
+    public void setUp() {
         String browser = System.getProperty("browser");
         if (browser.equals("chrome")) {
             WebDriverManager.chromedriver().setup();
@@ -54,26 +49,24 @@ public class DemoQATests {
                 "Expected title is 'DEMOQA' but actual is " + driver.getTitle());
     }
 
-    @AfterAll
-    public static void tearDown() {
+    @AfterEach
+    public void tearDown() {
         driver.quit();
     }
 
     @Test
-    @Order(5)
-    public void fieldTitleTest() {
+    public void practiceFormTest() throws InterruptedException {
         WebElement form = driver.findElement(By.id("userForm"));
+
+        //        field titles
         List<WebElement> fieldTitle = form.findElements(By.className("col-md-3"));
         List<String> expectedFieldTitle = List.of("Name", "Email", "Gender", "Mobile(10 Digits)", "Date of Birth", "Subjects", "Hobbies", "Picture", "Current Address", "State and City");
         for (int i = 0; i < fieldTitle.size(); ++i) {
             Assertions.assertEquals(expectedFieldTitle.get(i), fieldTitle.get(i).getText(),
                     "Expected field title is '" + expectedFieldTitle.get(i) + "' but actual is " + fieldTitle.get(i).getText());
         }
-    }
 
-    @Test
-    @Order(10)
-    public void firstNameInputTest() {
+        //        FIRST NAME
         WebElement firstName = driver.findElement(By.id("firstName"));
         Assertions.assertEquals("First Name", firstName.getAttribute("placeholder"),
                 "Expected first name placeholder is 'First Name' but actual is " + firstName.getAttribute("placeholder"));
@@ -81,11 +74,8 @@ public class DemoQATests {
         firstName.sendKeys("first name");
         Assertions.assertEquals("first name", firstName.getAttribute("value"),
                 "Expected first name is 'first name' but actual is " + firstName.getAttribute("value"));
-    }
 
-    @Test
-    @Order(15)
-    public void lastNameInputTest() {
+        //        LAST NAME
         WebElement lastName = driver.findElement(By.id("lastName"));
         Assertions.assertEquals("Last Name", lastName.getAttribute("placeholder"),
                 "Expected last name placeholder is 'Last Name' but actual is " + lastName.getAttribute("placeholder"));
@@ -93,11 +83,8 @@ public class DemoQATests {
         lastName.sendKeys("last name");
         Assertions.assertEquals("last name", lastName.getAttribute("value"),
                 "Expected last name is 'last name' but actual is " + lastName.getAttribute("value"));
-    }
 
-    @Test
-    @Order(20)
-    public void emailInputTest() {
+        //        EMAIL
         WebElement email = driver.findElement(By.id("userEmail"));
         Assertions.assertEquals("name@example.com", email.getAttribute("placeholder"),
                 "Expected email placeholder is 'name@example.com' but actual is " + email.getAttribute("placeholder"));
@@ -105,11 +92,8 @@ public class DemoQATests {
         email.sendKeys("user322@gmail.com");
         Assertions.assertEquals("user322@gmail.com", email.getAttribute("value"),
                 "Expected email is 'user322@gmail.com' but actual is " + email.getAttribute("value"));
-    }
 
-    @Test
-    @Order(25)
-    public void genderRadioTest() {
+        //        GENDER
         WebElement genderRadio = driver.findElement(By.id("gender-radio-2"));
         WebElement genderLabel = driver.findElement(By.xpath("//*[@for='gender-radio-2']"));
         Assertions.assertEquals("Female", genderLabel.getText(),
@@ -118,11 +102,8 @@ public class DemoQATests {
         genderLabel.click();
         Assertions.assertTrue(genderRadio.isSelected(),
                 "Expected radio-button 'Female' is not selected");
-    }
 
-    @Test
-    @Order(30)
-    public void numberInputTest() {
+        //        NUMBER
         WebElement number = driver.findElement(By.id("userNumber"));
         Assertions.assertEquals("Mobile Number", number.getAttribute("placeholder"),
                 "Expected mobile placeholder is 'Mobile Number' but actual is " + number.getAttribute("placeholder"));
@@ -130,11 +111,8 @@ public class DemoQATests {
         number.sendKeys("0123456789");
         Assertions.assertEquals("0123456789", number.getAttribute("value"),
                 "Expected mobile number is '0123456789' but actual is " + number.getAttribute("value"));
-    }
 
-    @Test
-    @Order(35)
-    public void dateOfBirthInputTest() {
+        //        DATE OF BIRTH
         WebElement dateOfBirth = driver.findElement(By.id("dateOfBirth"));
         WebElement dateOfBirthInput = dateOfBirth.findElement(By.id("dateOfBirthInput"));
         String dateOfBirthString = dateOfBirthInput.getAttribute("value");
@@ -152,31 +130,28 @@ public class DemoQATests {
 
         dateOfBirthInput.click();
 
-//        DATEPICKER | YEAR
+            //        DATE OF BIRTH | DATEPICKER | YEAR
         WebElement yearDropdown = driver.findElement(By.className("react-datepicker__year-select"));
         Select selectYear = new Select(yearDropdown);
         selectYear.selectByVisibleText("1977");
         Assertions.assertEquals("1977", yearDropdown.getAttribute("value"),
                 "Expected year option is '1977' but actual is " + yearDropdown.getAttribute("value"));
 
-//        DATEPICKER | MONTH
+            //        DATE OF BIRTH | DATEPICKER | MONTH
         WebElement monthDropdown = driver.findElement(By.className("react-datepicker__month-select"));
         Select selectMonth = new Select(monthDropdown);
         selectMonth.selectByVisibleText("May");
         Assertions.assertEquals("4", monthDropdown.getAttribute("value"),
                 "Expected month option is '4' but actual is " + monthDropdown.getAttribute("value"));
 
-//        DATEPICKER | DAY
+            //        DATE OF BIRTH | DATEPICKER | DAY
         WebElement dayDatepicker = driver.findElement(By.xpath("//*[contains(@class,'react-datepicker__day') and text()='25']"));
         dayDatepicker.click();
 
         Assertions.assertEquals("25 May 1977", dateOfBirthInput.getAttribute("value"),
                 "Expected date of birth is '25 May 1977' but actual is " + dateOfBirthInput.getAttribute("value"));
-    }
 
-    @Test
-    @Order(40)
-    public void subjectsAutoCompleteTest() {
+        //        SUBJECTS
         WebElement subjectsAutoCompleteInput = driver.findElement(By.id("subjectsInput"));
         subjectsAutoCompleteInput.sendKeys("En");
         Assertions.assertEquals("En", subjectsAutoCompleteInput.getAttribute("value"),
@@ -207,11 +182,8 @@ public class DemoQATests {
             Assertions.assertEquals(expectedSubjectsAutoCompleteDot.get(k), subjectsAutoCompleteDot.get(k).getText(),
                     "Expected selected subject is '" + expectedSubjectsAutoCompleteDot.get(k) + "' but actual is " + subjectsAutoCompleteDot.get(k).getText());
         }
-    }
 
-    @Test
-    @Order(45)
-    public void hobbiesCheckboxTest() {
+        //        HOBBIES
         WebElement hobbieCheckboxTwo = driver.findElement(By.id("hobbies-checkbox-2"));
         WebElement hobbieLabelTwo = driver.findElement(By.xpath("//*[@for='hobbies-checkbox-2']"));
 
@@ -228,11 +200,8 @@ public class DemoQATests {
 
         Assertions.assertTrue(hobbieCheckboxTwo.isSelected(), "Expected checkbox 'Reading' is not selected");
         Assertions.assertTrue(hobbieCheckboxThree.isSelected(), "Expected checkbox 'Music' is not selected");
-    }
 
-    @Test
-    @Order(50)
-    public void uploadPictureTest() {
+        //        PICTURE
         String systemProperty = System.getProperty("user.dir");
         String uploadImage = systemProperty + "/src/test/java/academit/fifthwheel/images/scroofy.jpg";
 
@@ -241,11 +210,8 @@ public class DemoQATests {
 
         Assertions.assertTrue(btnUploadPicture.getAttribute("value").contains("scroofy.jpg"),
                 "Expected downloaded file name contains 'scroofy.jpg' but actual is not");
-    }
 
-    @Test
-    @Order(55)
-    public void textareaCurrentAddressTest() {
+        //        CURRENT ADDRESS
         WebElement currentAddress = driver.findElement(By.id("currentAddress"));
         Assertions.assertEquals("Current Address", currentAddress.getAttribute("placeholder"),
                 "Expected current address placeholder is Current Address but actual is " + currentAddress.getAttribute("placeholder"));
@@ -253,11 +219,8 @@ public class DemoQATests {
         currentAddress.sendKeys("11 Main St, Haines, AK 99827," + "\n" + "United States");
         Assertions.assertEquals("11 Main St, Haines, AK 99827," + "\n" + "United States", currentAddress.getAttribute("value"),
                 "Expected address text is '" + "11 Main St, Haines, AK 99827," + "\n" + "United States" + "' but actual is " + currentAddress.getAttribute("value"));
-    }
 
-    @Test
-    @Order(60)
-    public void stateDropdownTest() {
+        //        STATE
         WebElement state = driver.findElement(By.id("state"));
         Assertions.assertEquals("Select State", state.getText(),
                 "Expected state placeholder is 'Select State' but actual is " + state.getText());
@@ -272,11 +235,8 @@ public class DemoQATests {
         WebElement stateSingle = state.findElement(By.className("css-1uccc91-singleValue"));
         Assertions.assertEquals("Haryana", stateSingle.getText(),
                 "Expected select state option is 'Haryana' but actual is " + stateSingle.getText());
-    }
 
-    @Test
-    @Order(65)
-    public void cityDropdownTest() {
+        //        CITY
         WebElement city = driver.findElement(By.id("city"));
         Assertions.assertEquals("Select City", city.getText(),
                 "Expected city placeholder is 'Select City' but actual is " + city.getText());
@@ -292,21 +252,15 @@ public class DemoQATests {
         WebElement citySingle = city.findElement(By.className("css-1uccc91-singleValue"));
         Assertions.assertEquals("Panipat", citySingle.getText(),
                 "Expected select city option is 'Panipat' but actual is " + citySingle.getText());
-    }
 
-    @Test
-    @Order(70)
-    public void btnFormSubmit() throws InterruptedException {
+        //        button
         Thread.sleep(500);
         driver.findElement(By.id("submit")).click();
-    }
 
-    @Test
-    @Order(75)
-    public void modalDialogTable() {
+        //        summary data
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("table-responsive")));
-        List<WebElement> tableLabelsValues = driver.findElements(By.xpath("//tbody//td"));
-        List<String> expectedTableLabelsValues = List.of("Student Name", "first name last name", "Student Email", "user322@gmail.com", "Gender", "Female", "Mobile", "0123456789", "Date of Birth", "25 May,1977", "Subjects", "English, Chemistry", "Hobbies", "Reading, Music", "Picture", "scroofy.jpg", "Address", "11 Main St, Haines, AK 99827, United States", "State and City", "Haryana Panipat");
+        List<WebElement> tableLabelsValues = driver.findElements(By.xpath("//tbody//td[2]"));
+        List<String> expectedTableLabelsValues = List.of("first name last name", "user322@gmail.com", "Female", "0123456789", "25 May,1977", "English, Chemistry", "Reading, Music", "scroofy.jpg", "11 Main St, Haines, AK 99827, United States", "Haryana Panipat");
         for (int m = 0; m < tableLabelsValues.size(); ++m) {
             Assertions.assertEquals(expectedTableLabelsValues.get(m), tableLabelsValues.get(m).getText(),
                     "Expected table text is " + expectedTableLabelsValues.get(m) + " but actual is " + tableLabelsValues.get(m).getText());
