@@ -42,7 +42,7 @@ public class OrderFormTests {
     @Order(1)
     public void dialogCookieTest() {
         Assertions.assertEquals("Этот сайт использует файлы cookie!", driver.findElement(By.id("c-ttl")).getText(),
-                "Expected dialog header is 'Этот сайт использует файлы cookie!' but atual is " + driver.findElement(By.id("c-ttl")).getText());
+                "Expected dialog header is 'Этот сайт использует файлы cookie!' but actual is " + driver.findElement(By.id("c-ttl")).getText());
 
         WebElement btnAcceptCookie = driver.findElement(By.id("c-p-bn"));
         Assertions.assertEquals("Принять все", btnAcceptCookie.getText(),
